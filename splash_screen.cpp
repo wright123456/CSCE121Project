@@ -1,25 +1,4 @@
-#include "std_lib_facilities_4.h"
-#include "Simple_window.h"
-#include "Graph.h"
-
-struct Splash_window : Graph_lib::Window
-{
-	Splash_window(Point xy, int w, int h, const string& title);
-	
-private:
-	Button start_button;
-	Button play_button;
-	Image back;
-	Image white;
-	Text t0; Text t1; Text t2; Text t3; Text t4;
-	Text t5; Text t6; Text t7; Text t8; Text t9;
-	
-	void start();
-	void play();
-	
-	static void cb_start(Address, Address window);
-	static void cb_play(Address, Address window);
-};
+#include "splash_screen.h"
 
 Splash_window::Splash_window(Point xy, int w, int h, const string& title)
 	:Window(xy, w, h, title),
@@ -35,9 +14,10 @@ Splash_window::Splash_window(Point xy, int w, int h, const string& title)
 	t4(Point(420,250),"Team #16"),
 	t5(Point(410,100),"Objective:"),
 	t6(Point(120,130),"You will be given 3-7 tiles, each labeled with a number or an operator."),
-	t7(Point(120,150),"to yield the highest arithmetic value. For example, the three tiles '3', '5' and '+' could be rearranged to"),
-	t8(Point(120,170),"'3+5=8', '5+3=8', +35=35', or +53=53. Since +53 has the highest value, that is the best move. If '35+' or 53+"),
-	t9(Point(120,190),"is chosen, the score is zero since that is not a 'well-formed formula' in arithmetic (illegal move).")
+	t7(Point(120,150),"to yield the highest arithmetic value. For example, the three tiles '3', '5' and '+' could be"),
+	t8(Point(120,170),"rearranged to '3+5=8', '5+3=8', +35=35', or +53=53. Since +53 has the highest value, that is"),
+	t9(Point(120,190),"the best move. If '35+' or '53+' is chosen, the score is zero since that is not a 'well-formed"),
+	t10(Point(120,210),"formula' in arithmetic (illegal move).")
 {
 	t0.set_font_size(40);
 	t1.set_font_size(20);
@@ -49,6 +29,7 @@ Splash_window::Splash_window(Point xy, int w, int h, const string& title)
 	t7.set_font_size(20);
 	t8.set_font_size(20);
 	t9.set_font_size(20);
+	t10.set_font_size(20);
 	back.set_mask(Point(0,0),1100,650);
 	white.set_mask(Point(40,40),400,250);
 	attach(back);
@@ -88,13 +69,14 @@ void Splash_window::start()
 	attach(t7);
 	attach(t8);
 	attach(t9);
+	attach(t10);
 	
 	redraw();
 }
 
 void Splash_window::play()
 {
-	
+	//START COMBINING CODE HERE
 	redraw();
 }
 
