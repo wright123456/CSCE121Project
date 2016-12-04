@@ -16,7 +16,7 @@ private:
 	Text t10;
 	
 	void start();
-	void play();
+	int play();
 	
 	static void cb_start(Address, Address window);
 	static void cb_play(Address, Address window);
