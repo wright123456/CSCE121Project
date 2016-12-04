@@ -91,13 +91,14 @@ double primary()
 	{
 		double d = expression();
 		t = ts.get();
-		if (t.kind != ')') error("')' expected");
-			return d;
+		if (t.kind != ')') //error("')' expected");
+			return 0.2223;
 	}
 	case '8':            // we use '8' to represent a number
 		return t.value; 		// return the number's value	
 	default:
-		error("primary expected");
+		//error("primary expected");
+		return 0.2223;
 	}
 }
 
@@ -107,6 +108,8 @@ double primary()
 double term()
 {
 	double left = primary();
+	if (left == 0.2223) 
+		return 0.2223;
 	Token t = ts.get();        // get the next token from token stream
 
 	while (true) {
@@ -118,7 +121,7 @@ double term()
 		case '/':
 		{
 			double d = primary();
-			if (d == 0) error("divide by zero");
+			if (d == 0) return 0.2223;//error("divide by zero");
 			left /= d;
 			t = ts.get();
 			break;
@@ -126,7 +129,7 @@ double term()
 		case '!':
 		{
 			int factorial = left;	//convert to int for switch case
-			if(left >= 10) error("can only perform factorial for values less than 10");
+			if(left >= 10) return 0.2223;//error("can only perform factorial for values less than 10");
 			switch(factorial){
 				case 9:
 					left = left * 8 * 7 * 6 * 5 * 4 * 3 * 2 * 1;
@@ -173,6 +176,8 @@ double expression()
 {
 	double left = term();      // read and evaluate a Term
 							   //closed parenthese on term
+	if(left == 0.2223)
+		return 0.2223;
 	Token t = ts.get();        // get the next token from token stream
 
 	while (true) {
@@ -206,15 +211,20 @@ try
 	while (cin) {
 		Token t = ts.get();
 
-		//if (invalid == 1) val = 0; cout<<'='<<val<<'\n';
-		if (t.kind == 'q') break; // 'q' for quit
-		if (t.kind == ';'){        // ';' for "print now"
-			cout << "=" << val << '\n';
-			final_val = val;
+		if(val == 0.2223){
+			final_val = 0;
+			cout<<'='<<final_val<<'\n';
 		}
-		else
-			ts.putback(t);
-		val = expression();
+		else{
+			if (t.kind == 'q') break; // 'q' for quit
+			if (t.kind == ';'){        // ';' for "print now"
+				final_val = val;
+				cout << "=" << final_val << '\n';
+			}
+			else
+				ts.putback(t);
+			val = expression();
+		}
 	}
 	keep_window_open();
 }
