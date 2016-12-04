@@ -1,4 +1,3 @@
-#define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS	//temp
 /*
    std_lib_facilities_4.h
    Minimally revised for C++11 features of GCC 4.6.3 or later

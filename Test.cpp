@@ -4,12 +4,11 @@
 #include "GUI.h"
 #include "Point.h"
 #include "Graph.h"
-
+#include "splash_screen.h"
 int main()
 {
-	final_window = true;
-	Score_Window win{ Point{100,100},1000,700,"stuff" };
 
+Splash_window win{ Point{100,100},1000,700,"" };
+return gui_main();
 
-	return gui_main();
-} 
+}
