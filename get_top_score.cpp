@@ -61,13 +61,20 @@ vector<score> scoreboard_input(int scoreboard_num)
 	vector<score> high_score;
 	vector<string> scoreboard_names = { "scoreboard_3.txt", "scoreboard_4.txt", "scoreboard_5.txt",
 		"scoreboard_5.txt","scoreboard_6.txt","scoreboard_7.txt" };
-	ifstream ifstr{ scoreboard_names[scoreboard_num - 2] };
-	if (ifstr.fail())
-		throw bad_scoreboard_num{};
+	fstream f;
+	ifstream ifstr{ scoreboard_names[scoreboard_num - 3] };
+	if(ifstr.fail() && scoreboard_num>=3 && scoreboard_num<=7  )
+		{
+		f.open(scoreboard_names[scoreboard_num-3],ios::out);
+		for( int i=0; i<=4;++i)
+			f<<single_initials<<" "<<fixed<<setprecision(2)<< 0;
+		}
+	else
+	f.close();
 	for (unsigned int i = 0; i <= 4; ++i) // Reading top five scores to a vector
 	{
 		ifstr >> single_initials >> single_score;
-		if (single_initials == "")
+		if (single_initials == "" )
 			single_initials = "N/A";
 		initials_temp.push_back(single_initials);
 		score_temp.push_back(single_score);
@@ -82,12 +89,12 @@ vector<score> scoreboard_output(score current, int scoreboard_num, bool update, 
 {
 	vector<string> scoreboard_names = { "scoreboard_3.txt", "scoreboard_4.txt", "scoreboard_5.txt",
 	"scoreboard_5.txt","scoreboard_6.txt","scoreboard_7.txt" };
-	ofstream ofstr{ scoreboard_names[scoreboard_num - 2] };
+	ofstream ofstr{ scoreboard_names[scoreboard_num - 3] };
 	if (update == true)
 		update_high_score(high_score, current); // If it is a high score, it is placed in the vector
 	for (unsigned int i = 0; i <= high_score.size() - 1; ++i) // Writing to the save file
 	{
-		ofstr<<fixed <<setprecision(2)<< high_score[i].get_initials() << "      " << high_score[i].get_score_num() << std::endl;
+		ofstr<< high_score[i].get_initials() << "      " <<fixed<<setprecision(2)<< high_score[i].get_score_num() << std::endl;
 	}
 	return high_score;
 }
