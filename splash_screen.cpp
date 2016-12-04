@@ -1,4 +1,5 @@
 #include "splash_screen.h"
+#include "get_top_score.h"
 
 Splash_window::Splash_window(Point xy, int w, int h, const string& title)
 	:Window(xy, w, h, title),
@@ -74,14 +75,13 @@ void Splash_window::start()
 	redraw();
 }
 
-void Splash_window::play()
+int Splash_window::play()
 {
+	hide();
 	//START COMBINING CODE HERE
-	redraw();
+		final_window_truth(false);
+	Score_Window win{ Point{100,100},1000,700,"" };
+	return gui_main();
+	
 }
 
-int main()
-{
-	Splash_window win(Point(100,100), 1000, 700, "Super Adder Group #16");
-	return gui_main();
-}
