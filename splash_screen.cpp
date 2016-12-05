@@ -6,21 +6,21 @@ Splash_window::Splash_window(Point xy, int w, int h, const string& title)
 	
 	start_button(Point(440,650), 120, 50, "Start", cb_start),
 	play_button(Point(440,650), 120, 50, "Play", cb_play),
-	back(Point(0,0),"background.jpg"),
+	back(Point(0,0),"background.jpg"),		//background for main screen
 	white(Point(300,100),"white.jpg"),
-	t0(Point(350,200),"The Super Adder"),
+	t0(Point(350,200),"The Super Adder"),		//make objects for the main screen
 	t1(Point(310, 300),"Matt Whitman"),
 	t2(Point(450,300),"Lane Wright"),
 	t3(Point(575,300),"Alex Westby"),
 	t4(Point(420,250),"Team #16"),
 	t5(Point(410,100),"Objective:"),
-	t6(Point(120,130),"You will be given 3-7 tiles, each labeled with a number or an operator."),
+	t6(Point(120,130),"You will be given 3-7 tiles, each labeled with a number or an operator."), //make objects for game explanation
 	t7(Point(120,150),"to yield the highest arithmetic value. For example, the three tiles '3', '5' and '+' could be"),
 	t8(Point(120,170),"rearranged to '3+5=8', '5+3=8', +35=35', or +53=53. Since +53 has the highest value, that is"),
 	t9(Point(120,190),"the best move. If '35+' or '53+' is chosen, the score is zero since that is not a 'well-formed"),
 	t10(Point(120,210),"formula' in arithmetic (illegal move).")
 {
-	t0.set_font_size(40);
+	t0.set_font_size(40);	//adjust object font size for better reading
 	t1.set_font_size(20);
 	t2.set_font_size(20);
 	t3.set_font_size(20);
@@ -36,7 +36,7 @@ Splash_window::Splash_window(Point xy, int w, int h, const string& title)
 	attach(back);
 	attach(white);
 	attach(t0);
-	attach(t1);
+	attach(t1);	//attach first set of objects
 	attach(t2);
 	attach(t3);
 	attach(t4);
@@ -56,16 +56,16 @@ void Splash_window::cb_play(Address, Address pw)
 void Splash_window::start()
 {
 	detach(back);
-	detach(white);
+	detach(white);	//detach all objects from start screen
 	detach(t0);
 	detach(t1);
 	detach(t2);
 	detach(t3);
 	detach(t4);
-	detach(start_button);
+	detach(start_button);	//detach first button
 	
-	attach(play_button);
-	attach(t5);
+	attach(play_button);	//attach next button
+	attach(t5);		//attach all text objects for game explanation
 	attach(t6);
 	attach(t7);
 	attach(t8);
@@ -79,7 +79,7 @@ int Splash_window::play()
 {
 	hide();
 	//START COMBINING CODE HERE
-		final_window_truth(false);
+		final_window_truth(false);	//attach code for difficulty selector
 	Score_Window win{ Point{100,100},1000,700,"" };
 	return gui_main();
 	
