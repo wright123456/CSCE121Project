@@ -16,15 +16,14 @@ struct Game_window : Graph_lib::Window{
 	
 	private:
 	
-		void set_tiles();
+		void set_tiles();		
 		void set_tile_values();
 	
 		string tile_value;
 	
 		Vector_ref<Button> tiles;
 		int difficulty;
-		
-		int randint();
+
 		int tile_val;
 		vector<int> tile_nums;
 		int num_ops = 1;
@@ -60,16 +59,11 @@ struct Game_window : Graph_lib::Window{
 		Button evaluate_but;
 		static void cb_evaluate(Address, Address pw);
 		int evaluate();
-		
-		static void cb_done(Address, Address pw);
-		void done();
 
 		bool invalid_factorial = false;
 		
 		double val;	//defined "val"
 		double final_val; //value that will be added to scoreboard
-		char start = '0';		//this line and the next 3 lines start the input
-		double start_val;		//starts with an operator (like "+35") withou
 		
 		double primary(Token_stream* ts);
 		double term(Token_stream* ts);

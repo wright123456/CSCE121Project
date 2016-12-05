@@ -1,57 +1,44 @@
 #include "Game_window.h"
 #include "get_top_score.h"
 
-
+unsigned int rseed = 1;		//assigns initial seed value for the random number generator
 
 Game_window::Game_window(Point xy ,int w, int h, const string& title) :
 	Window(xy,w,h,title),
 	evaluate_but(Point{500,400},90,40,"Evaluate",cb_evaluate)
 {
-	difficulty= get_scoreboard_number();
-	set_tile_values();
-	set_tiles();
+	difficulty = get_scoreboard_number();				//Gets the user assigned difficulty value
+	set_tile_values();									//Gets the labels (operators/operands) for the tiles
+	set_tiles();										//Creates the tiles.
 }
 
-int Game_window::randint(){
-	using namespace std::chrono;
-	//use the clock for an initial pseudorandom number
-	static long x = time_point_cast<microseconds>(system_clock::now())
-					.time_since_epoch().count() & 0x7fffffff; //CORRECTED
-	//calculate teh next pseudorandom number
-	x = (1103515245 * x + 12345) & 0x7fffffff;	//parameters from glibc(?)
-	
-	x = x % 16;
-	return x;
-}
-
-void Game_window::set_tile_values()
+void Game_window::set_tile_values()						//Generates the values to be translated to the tile labels.
 {
+	
 	vector<int> iterator = {0,1,2,3,4,5,6};
+	int k = rand();
+	srand(rseed);										//Sets the seed for rand to use.
+	rseed = rseed * k;									//Changes the value of seed for the rand num generator
 	for(auto i:iterator)
 	{
-		tile_nums.push_back(randint());
+		int a = rand() % 16;
+		tile_nums.push_back(a);
 	}	
-	translate_value();
+	translate_value();			
 }
 
-void Game_window::translate_value()
-{	
-	for(int i = 0; i < tile_nums.size(); ++i)
-	{
+void Game_window::translate_value()						//Translates a value to the label of a button
+{														//Longer than 24 lines, because I couldn't find a
+	for(int i = 0; i < tile_nums.size(); ++i)			//simpler way to do the various checks to make sure
+	{													//the expressions would be valid.
 		switch(tile_nums[i]){
-			case 0: case 1: case 2: case 3: case 4:
+			case 0: case 1: case 2: case 3: case 4:		//If its a num 1-9, convert to string
 			case 5: case 6: case 7: case 8: case 9:
 			tile_value = to_string(tile_nums[i]);labels.push_back(tile_value); ++num_digits;break;
-			case 10: 
-				/*if(labels.size() == difficulty)
-				{
-					string a = to_string(randint()%10);
-					labels.push_back(a);
-					++num_digits;
-				}
-				*/if(num_digits < num_ops)
-				{
-					string a = to_string(randint()%10);
+			case 10: 									
+				if(num_digits < num_ops)				//Checks if there are more operators than digits
+				{										//If so, then pushback a number between 0-10 instead.
+					string a = to_string(rand()%10);
 					labels.push_back(a);
 					++num_digits;
 				}
@@ -63,14 +50,9 @@ void Game_window::translate_value()
 				}
 				break;
 			case 11: 
-				/*if(labels.size() == difficulty)
-				{
-					string a = to_string(randint()%10);
-					labels.push_back(a);
-				}*/
 				if(num_digits < num_ops)
 				{
-					string a = to_string(randint()%10);
+					string a = to_string(rand()%10);
 					labels.push_back(a);
 					++num_digits;
 				}
@@ -82,14 +64,9 @@ void Game_window::translate_value()
 				}
 				break;
 			case 12: 
-				/*if(labels.size() == difficulty)
+				if(num_digits < num_ops)
 				{
-					string a = to_string(randint()%10);
-					labels.push_back(a);
-				}
-				*/if(num_digits < num_ops)
-				{
-					string a = to_string(randint()%10);
+					string a = to_string(rand()%10);
 					labels.push_back(a);
 					++num_digits;
 				}
@@ -101,14 +78,9 @@ void Game_window::translate_value()
 				}
 				break;
 			case 13: 
-				/*if(labels.size() == difficulty)
+				if(num_digits < num_ops)
 				{
-					string a = to_string(randint()%10);
-					labels.push_back(a);
-				}
-				*/if(num_digits < num_ops)
-				{
-					string a = to_string(randint()%10);
+					string a = to_string(rand()%10);
 					labels.push_back(a);
 					++num_digits;
 				}
@@ -120,16 +92,16 @@ void Game_window::translate_value()
 				}
 				break;
 			case 14: 
-				if((labels.size() == difficulty-1) || (difficulty < 5))
-				{
-					string a = to_string(randint()%10);
+				if((labels.size() == difficulty-1) || (difficulty < 5))	//Check if the last tile displayed is a '('
+				{														//if so, then put a number 0-10 instead
+					string a = to_string(rand()%10);
 					labels.push_back(a);
 					++num_digits;
 				}
 				else
 				{
-					labels.push_back("(");
-					labels.push_back(")");
+					labels.push_back("(");					//If given '('
+					labels.push_back(")");					//Make sure next one is ')'
 					++num_ops;
 					++i;
 				}
@@ -137,7 +109,7 @@ void Game_window::translate_value()
 			case 15:
 				if(num_digits < num_ops)
 				{
-					string a = to_string(randint()%10);
+					string a = to_string(rand()%10);
 					labels.push_back(a);
 					++num_digits;
 				}
@@ -152,7 +124,7 @@ void Game_window::translate_value()
 	}
 }
 
-void Game_window::set_tiles()
+void Game_window::set_tiles()								//Creates the buttons with the appropriate labels.
 {
 	tiles.push_back(new Button(Point{150,10},90,90,labels[0],cb_move1));
 	tiles.push_back(new Button(Point{250,10},90,90,labels[1],cb_move2));
@@ -164,54 +136,52 @@ void Game_window::set_tiles()
 	
 	for(auto i = 0; i < difficulty; ++i)
 	{
-		attach(tiles[i]);
+		attach(tiles[i]);									//Attaches up to (difficulty) many buttons.
 	}
 	redraw();
 }
 
 
-int Game_window::x_move(Button* tile)
+int Game_window::x_move(Button* tile)						//Find how much to move x button in x direction to formula line in
 {
-	int current_x = tile->loc.x;
+	int current_x = tile->loc.x;							//Get current x position
 	int desired_x = clicks*100 + 150;
 	int move_x;
-	clicks++;
-	
-	if(clicks > difficulty)
+	++clicks;
+	if((clicks > difficulty)||(tile->loc.y > 200))									//If all tiles have been moved, don't move again
 	{
-		move_x = 0;
+		move_x =0;
+		--clicks;
 	}
 	else if(clicks <= difficulty)
 	{
-		final_string_vec.push_back(tile->label);
-		move_x = desired_x - current_x;
+		final_string_vec.push_back(tile->label);			//Pushback the label of the button
+		move_x = desired_x - current_x;						//Value of how much button needs to move in x-direction
 		
-		if(clicks == difficulty)
-		{
+		if(clicks == difficulty)								//If it is the last tile clicked
+		{														//concatenate the strings to make one final one.
 			final_string = final_string_vec[0];
-			for(int n = 1; n < final_string_vec.size(); ++n)
+			for(int n = 1; n < final_string_vec.size(); ++n)	
 			{
-				final_string = final_string + final_string_vec[n];
+				final_string = final_string + final_string_vec[n];	
 				final_value = 1;
 			}
 			
-			if(final_string_vec[difficulty-1] == "+" || final_string_vec[difficulty-1] == "-" ||
-				final_string_vec[difficulty-1] == "*" ||final_string_vec[difficulty-1] == "/"	)
+			if(final_string_vec[difficulty-1] == "+" || final_string_vec[difficulty-1] == "-" ||	//Check if the last tile is an operand
+				final_string_vec[difficulty-1] == "*" ||final_string_vec[difficulty-1] == "/"	)	//If so, the final value = 0
 			{
 				final_value = 0;
-				//set_user_score(0);
 			}
 			
-			attach(evaluate_but);
-			final_string = final_string + ";";
-		}
+			attach(evaluate_but);						//Attach the button to evaluate the expression from the formula line.
+			final_string = final_string + ";";			//Add semi-colon to end of the string for the calculator.
+		}		
 	}
-	
 	return move_x;
 	
 }
 
-int Game_window::y_move(Button* tile)
+int Game_window::y_move(Button* tile)				//Find how much to move button in y direction to formula line
 {
 	int current_y = tile->loc.y;
 	if(current_y < 50)
@@ -224,7 +194,7 @@ int Game_window::y_move(Button* tile)
 	}
 }
 
-void Game_window::cb_move1(Address, Address pw)
+void Game_window::cb_move1(Address, Address pw)			//Callback and move functions for each tile
 {  
 	reference_to<Game_window>(pw).move1();
 }
@@ -294,28 +264,26 @@ void Game_window::move7()
 	int dist_y = y_move(&tiles[6]);
 	tiles[6].move(dist_x,dist_y);
 }
+
+
 void Game_window::cb_evaluate(Address,Address pw)
 {
 	reference_to<Game_window>(pw).evaluate();
 }
-int Game_window::evaluate()
+
+
+int Game_window::evaluate()							//Evaluate the expression from the formula line
 {
 	detach(evaluate_but);
 	redraw();	
-	final_string = "0"+final_string;
-	istringstream calc_string(final_string);
-	Token_stream ts(&calc_string);
-	
-	//char start = '0';		//this line and the next 3 lines start the input
-	//calc_string.putback(start);		//with a zero. this handles the case that the player
-	//double start_val = 0;		//starts with an operator (like "+35") without
-	//Token('8', start_val);	//the calculator function failing
+	final_string = "0"+final_string;				//Adds "0" to beginning of string to account for '+35' input
+	istringstream calc_string(final_string);		//Converts the final string to an input stream for the calculator
+	Token_stream ts(&calc_string);					//Create a Token_stream of calc_string
 	
 	while (calc_string) {
 		Token t = ts.get();
-		if((val == 0.2223) || (invalid_factorial == true)){
-			final_val = 0;
-			cout<<'='<<final_val<<'\n';
+		if((val == 0.2223) || (invalid_factorial == true)){			//Checks if there were any errors during the calculations
+			final_val = 0;											//If so, the final value = 0
 			break;
 		}
 		else{
@@ -326,24 +294,18 @@ int Game_window::evaluate()
 			}
 			else
 				ts.putback(t);
-				val = expression(&ts);
+				val = expression(&ts);				//Pass the address of a Token_stream into the calculations
 		}
 	}
-	cout << "Your score is: " << final_val << endl;
-	string fin_str = to_string(final_val);
-	Button fin_val(Point{400,300},200,100,fin_str,cb_done);
-	attach(fin_val);
-	for(int k = 0; k < difficulty; ++k)
-	{
-		detach(tiles[k]);
-	}
-	redraw();
-	labels.clear();
+	
+	labels.clear();										//Clear vectors labels and tile_nums
 	tile_nums.clear();
-	set_user_score(final_val);
-	hide();
+	
+	set_user_score(final_val);							//Outputs user score for the scoreboard
+	
+	hide();												//Hides current window
 	final_window_truth(true);
-	Score_Window window2{Point{100,100},1000,700,"" };
+	Score_Window window2{Point{100,100},1000,700,"" };	//Creates new window for the scoreboard
 	return gui_main();
 }
 
@@ -465,12 +427,3 @@ double Game_window::expression(Token_stream* ts_ptr)
 
 //------------------------------------------------------------------------------
 
-void Game_window::cb_done(Address, Address pw)
-{
-	reference_to<Game_window>(pw).done();
-}
-
-void Game_window::done()
-{
-	
-}

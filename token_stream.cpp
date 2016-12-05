@@ -2,45 +2,39 @@
 #include "Token.h"
 #include "std_lib_facilities_4.h"
 
-// The constructor just sets full to indicate that the buffer is empty:
-Token_stream::Token_stream(istringstream* calc_stringptr):full(false), buffer(0)  // no Token in buffer
+Token_stream::Token_stream(istringstream* calc_stringptr):full(false), buffer(0)  // sets buffer to empty
 {
-	calc_string = calc_stringptr;
+	calc_string = calc_stringptr;				//input parameter 
 }
 
-//------------------------------------------------------------------------------
-
-// The putback() member function puts its argument back into the Token_stream's buffer:
-void Token_stream::putback(Token t)
+void Token_stream::putback(Token t)				//puts token into buffer
 {
 	if (full) error("putback() into a full buffer");
-	buffer = t;       // copy t to buffer
-	full = true;      // buffer is now full
+	buffer = t;
+	full = true;
 }
 
 Token Token_stream::get()
 {
-	if (full) {       // do we already have a Token ready?
-					  // remove token from buffer
-		full = false;
-		return buffer;
+	if (full) {      			//checks if there is a buffer in token
+		full = false;			//if so, then
+		return buffer;			//get returns that token, and sets buffer to empty.
 	}
 
 	char ch;
 	*calc_string >> ch;    // note that >> skips whitespace (space, newline, tab, etc.)
 	switch (ch) {
-	case ';':    // for "print"
-	case 'q':    // for "quit"
+	case ';': 		//to end the calculation
 	case '(': case ')': case '+': case '-': case '*': case '/': case '!':
-		return Token(ch);// let each character represent itself
+		return Token(ch);						//Each operator undergoes no change
 	case '.':
 	case '0': case '1': case '2': case '3': case '4':
 	case '5': case '6': case '7': case '8':case '9':
 	{
-		calc_string->putback(ch);         // put digit back into the input stream
+		calc_string->putback(ch);         //Puts back the digit into input stream
 		double val;
-		*calc_string >> val; 		// read a floating-point number
-		return Token('8', val);   // let '8' represent "a number"
+		*calc_string >> val; 		//dereferences the input stream pointer, and reads in the value
+		return Token('8', val);   // kind 8 represents a digit.
 	}
 	default:
 		return Token('8',0);

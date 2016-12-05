@@ -6,11 +6,11 @@
 
 class Token{			
 public:
-	char kind;        // what kind of token
-	double value;     // for numbers: a value 
-	Token(char ch)    // make a Token from a char
-		:kind(ch), value(0) { }
-	Token(char ch, double val)     // make a Token from a char and a double
+	char kind;        // shows what kind of token it is
+	double value;     // if kind is a "number", then the value of that number 
+	Token(char ch)   			// if token is an operator
+		:kind(ch), value(0) { }	//sets the value to 0, kind is the operator
+	Token(char ch, double val) 
 		:kind(ch), value(val) { }
 };
 
