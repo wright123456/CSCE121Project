@@ -5,6 +5,7 @@
 #include "Graph.h"
 #include "Point.h"
 #include "splash_screen.h"
+#include "Game_window.h"
 
 
 float user_score;
@@ -199,8 +200,10 @@ int Score_Window::again()// Updates scorebaord and allows player to play again
 	return gui_main();
 }
 
-void Score_Window::scoreboard_next()// Used to play the game
+int Score_Window::scoreboard_next()// Used to play the game
 {
 	hide();
 	//Insert code for next window/to start actual game
+	Game_window win2{Point{100,100},1000,700,"" };
+	return gui_main();
 }

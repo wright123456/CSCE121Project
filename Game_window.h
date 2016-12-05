@@ -27,8 +27,8 @@ struct Game_window : Graph_lib::Window{
 		int randint();
 		int tile_val;
 		vector<int> tile_nums;
-		int num_ops = 0;
-		int num_digits = 1;
+		int num_ops = 1;
+		int num_digits = 0;
 		
 		int clicks = 0;
 
@@ -59,7 +59,7 @@ struct Game_window : Graph_lib::Window{
 		
 		Button evaluate_but;
 		static void cb_evaluate(Address, Address pw);
-		void evaluate();
+		int evaluate();
 		
 		static void cb_done(Address, Address pw);
 		void done();

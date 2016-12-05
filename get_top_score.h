@@ -52,7 +52,7 @@ private:
 	void next();
 	void quit();
 	int again();
-	void scoreboard_next();
+	int scoreboard_next();
 	void attach_scores();
 	Text  initials_text, score_text, score_text_current, initials_text_current;
 };

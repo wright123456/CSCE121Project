@@ -1,10 +1,13 @@
 #include "Game_window.h"
+#include "get_top_score.h"
+
+
 
 Game_window::Game_window(Point xy ,int w, int h, const string& title) :
 	Window(xy,w,h,title),
 	evaluate_but(Point{500,400},90,40,"Evaluate",cb_evaluate)
 {
-	difficulty =  5; /*get_scoreborard_number()*/;
+	difficulty= get_scoreboard_number();
 	set_tile_values();
 	set_tiles();
 }
@@ -23,7 +26,8 @@ int Game_window::randint(){
 
 void Game_window::set_tile_values()
 {
-	for(int i = 0; i < 7; ++i)
+	vector<int> iterator = {0,1,2,3,4,5,6};
+	for(auto i:iterator)
 	{
 		tile_nums.push_back(randint());
 	}	
@@ -39,15 +43,17 @@ void Game_window::translate_value()
 			case 5: case 6: case 7: case 8: case 9:
 			tile_value = to_string(tile_nums[i]);labels.push_back(tile_value); ++num_digits;break;
 			case 10: 
-				if(labels.size() == difficulty)
+				/*if(labels.size() == difficulty)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
-				else if(num_digits < num_ops)
+				*/if(num_digits < num_ops)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
 				else
 				{
@@ -57,15 +63,16 @@ void Game_window::translate_value()
 				}
 				break;
 			case 11: 
-				if(labels.size() == difficulty)
+				/*if(labels.size() == difficulty)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
-				}
-				else if(num_digits < num_ops)
+				}*/
+				if(num_digits < num_ops)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
 				else
 				{
@@ -75,15 +82,16 @@ void Game_window::translate_value()
 				}
 				break;
 			case 12: 
-				if(labels.size() == difficulty)
+				/*if(labels.size() == difficulty)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
 				}
-				else if(num_digits < num_ops)
+				*/if(num_digits < num_ops)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
 				else
 				{
@@ -93,15 +101,16 @@ void Game_window::translate_value()
 				}
 				break;
 			case 13: 
-				if(labels.size() == difficulty)
+				/*if(labels.size() == difficulty)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
 				}
-				else if(num_digits < num_ops)
+				*/if(num_digits < num_ops)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
 				else
 				{
@@ -115,6 +124,7 @@ void Game_window::translate_value()
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
 				else
 				{
@@ -124,11 +134,12 @@ void Game_window::translate_value()
 					++i;
 				}
 				break;
-			case 15: 
+			case 15:
 				if(num_digits < num_ops)
 				{
 					string a = to_string(randint()%10);
 					labels.push_back(a);
+					++num_digits;
 				}
 				else
 				{
@@ -136,6 +147,7 @@ void Game_window::translate_value()
 					labels.push_back(tile_value);
 					++num_ops;
 				}
+				break;
 		}
 	}
 }
@@ -286,7 +298,7 @@ void Game_window::cb_evaluate(Address,Address pw)
 {
 	reference_to<Game_window>(pw).evaluate();
 }
-void Game_window::evaluate()
+int Game_window::evaluate()
 {
 	detach(evaluate_but);
 	redraw();	
@@ -326,7 +338,13 @@ void Game_window::evaluate()
 		detach(tiles[k]);
 	}
 	redraw();
-	//PASS HIGH SCORE HERE
+	labels.clear();
+	tile_nums.clear();
+	set_user_score(final_val);
+	hide();
+	final_window_truth(true);
+	Score_Window window2{Point{100,100},1000,700,"" };
+	return gui_main();
 }
 
 
