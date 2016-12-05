@@ -5,6 +5,8 @@
 #include "GUI.h"
 #include "Graph.h"
 #include "Simple_window.h"
+#include "Token.h"
+#include "token_stream.h"
 
 struct Game_window : Graph_lib::Window{
 	
@@ -24,14 +26,19 @@ struct Game_window : Graph_lib::Window{
 		
 		int randint();
 		int tile_val;
+		vector<int> tile_nums;
+		int num_ops = 0;
+		int num_digits = 1;
 		
 		int clicks = 0;
 
 		int x_move(Button* tile);
+		int y_move(Button* tile);
+		
+		float final_value;
 		
 		vector<string> final_string_vec;
 		string final_string;
-		
 		
 		void translate_value();
 		
@@ -49,6 +56,25 @@ struct Game_window : Graph_lib::Window{
 		void move6();
 		static void cb_move7(Address, Address pw);
 		void move7();
+		
+		Button evaluate_but;
+		static void cb_evaluate(Address, Address pw);
+		void evaluate();
+		
+		static void cb_done(Address, Address pw);
+		void done();
+
+		bool invalid_factorial = false;
+		
+		double val;	//defined "val"
+		double final_val; //value that will be added to scoreboard
+		char start = '0';		//this line and the next 3 lines start the input
+		double start_val;		//starts with an operator (like "+35") withou
+		
+		double primary(Token_stream* ts);
+		double term(Token_stream* ts);
+		double expression(Token_stream* ts);
+			
 };
 
 #endif
