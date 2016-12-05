@@ -1,6 +1,8 @@
 #include "std_lib_facilities_4.h"
 #include "Simple_window.h"
 #include "Graph.h"
+//this is the header file for the splash window class to create the splash window
+//this window handles the start screen and the instructions
 
 struct Splash_window : Graph_lib::Window
 {
