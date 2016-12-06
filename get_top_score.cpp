@@ -52,19 +52,19 @@ void update_high_score(vector<score>& scoreboard, score& current) // Compares sc
 		}
 	}
 }
-vector<score> scoreboard_input(int scoreboard_num)
+vector<score> scoreboard_input(int scoreboard_num)// used to read in scores
 {
 	score temp{ "AJW", 15000 }; // Used to 
-	float single_score;
-	string single_initials;
+	float single_score;// temporary to hold score
+	string single_initials;// temporary to hold initials
 	vector<float> score_temp;
 	vector<string> initials_temp;
 	vector<score> high_score;
 	vector<string> scoreboard_names = { "scoreboard_3.txt", "scoreboard_4.txt", "scoreboard_5.txt",
 		"scoreboard_5.txt","scoreboard_6.txt","scoreboard_7.txt" };
 	fstream f;
-	ifstream ifstr{ scoreboard_names[scoreboard_num - 3] };
-	if(ifstr.fail() && scoreboard_num>=3 && scoreboard_num<=7  )
+	ifstream ifstr{ scoreboard_names[scoreboard_num - 3] };// read in 
+	if(ifstr.fail() && scoreboard_num>=3 && scoreboard_num<=7  )// If scoreboard doesn't exist, create it
 		{
 		f.open(scoreboard_names[scoreboard_num-3],ios::out);
 		for( int i=0; i<=4;++i)
